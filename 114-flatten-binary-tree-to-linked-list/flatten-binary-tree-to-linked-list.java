@@ -1,20 +1,32 @@
-public class Solution {
-    private TreeNode prev = null;
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 
+class Solution {
     public void flatten(TreeNode root) {
-        if (root == null) return;
-
-        // Process right subtree first
-        flatten(root.right);
-
-        // Process left subtree
-        flatten(root.left);
-
-        // Set the current node's right to prev and left to null
-        root.right = prev;
+        if (root == null) {
+            return;
+        }
+        TreeNode rightTree = root.right;
+        root.right = root.left;
         root.left = null;
-
-        // Update prev to current node
-        prev = root;
+        TreeNode temp = root;
+        while (temp.right != null) {
+            temp = temp.right;
+        }
+        temp.right = rightTree;
+        flatten(root.right);
     }
 }
