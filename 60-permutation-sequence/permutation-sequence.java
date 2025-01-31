@@ -1,33 +1,37 @@
 class Solution {
-    
-    public int getPmt(int i){
-        if(i<=1)return 1;
-        return i*getPmt(i-1);
-    }
-
     public String getPermutation(int n, int k) {
-        int[] arr = new int[n+1];
-       
-     
-        StringBuilder s = new StringBuilder();
-        while(k>0){
-            n--;
-            int pmt = getPmt(n);
-            for(int i = 1;i<arr.length; i++){
-                if(arr[i] == 0){
-                    if(k>pmt)
-                        k-=pmt;
-                    else{
-                        k -= k==pmt?k:0;
-                        s.append(""+i);
-                        arr[i] = 1;
-                        break;
-                    }
-                }
-            }
+        // Calculate (n-1)!
+        int fact = 1;
+        ArrayList<Integer> ds = new ArrayList<>();
+        
+        for (int i = 1; i < n; i++) {
+            fact *= i;       // Compute factorial
+            ds.add(i);       // Add numbers 1 to (n-1) to the list
         }
-        for(int i=arr.length-1;i>0;i--)
-            if(arr[i]==0)s.append(""+i);
-        return s.toString();
+        ds.add(n);           // Add the last number (n)
+        
+        // Convert k to 0-based index for easier calculations
+        k = k - 1;
+        String ans = "";     // Store the k-th permutation
+        
+        // Construct the permutation
+        while (true) {
+            // Append the number at index (k / fact) in ds to the answer
+            ans = ans + ds.get(k / fact);
+            ds.remove(k / fact); // Remove the used number from the list
+            
+            // If all numbers are used, break
+            if (ds.size() == 0) {
+                break;
+            }
+            
+            // Update k and fact for the remaining numbers
+            k = k % fact;
+            fact = fact / ds.size();
+        }
+        
+        return ans;
     }
 }
+
+ 
