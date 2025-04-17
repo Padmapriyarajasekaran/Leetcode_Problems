@@ -1,2 +1,2 @@
-SELECT product_id from Products 
-WHERE low_fats = 'Y' AND recyclable = 'Y';
+select product_id from products 
+where low_fats = 'y' and recyclable ='Y';
